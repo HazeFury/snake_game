@@ -1,0 +1,11 @@
+{
+  "window": {
+    "width": 1200,
+    "height": 800
+  },
+  "levels": {
+    "Easy": { "rows": 10 },
+    "Intermediate": { "rows": 20 },
+    "Hardcore": { "rows": 30 }
+  }
+}

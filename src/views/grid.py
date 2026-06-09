@@ -1,37 +1,16 @@
-"""
-Array Backed Grid
-
-Show how to use a two-dimensional list/array to back the display of a
-grid on-screen.
-
-Note: Regular drawing commands are slow. Particularly when drawing a lot of
-items, like the rectangles in this example.
-
-For faster drawing, create the shapes and then draw them as a batch.
-See array_backed_grid_buffered.py
-
-If Python and Arcade are installed, this example can be run from the command line with:
-python -m arcade.examples.array_backed_grid
-"""
-
 import arcade
-
-# Set how many rows and columns we will have
-ROW_COUNT = 15
-COLUMN_COUNT = 15
-
-# This sets the WIDTH and HEIGHT of each grid location
-WIDTH = 30
-HEIGHT = 30
 
 # This sets the margin between each cell
 # and on the edges of the screen.
-MARGIN = 5
+MARGIN = 1
 
-# Do the math to figure out our screen dimensions
-WINDOW_WIDTH = (WIDTH + MARGIN) * COLUMN_COUNT + MARGIN
-WINDOW_HEIGHT = (HEIGHT + MARGIN) * ROW_COUNT + MARGIN
-WINDOW_TITLE = "Array Backed Grid Example"
+# Set how many rows and columns we will have
+ROW_COUNT = 8
+COLUMN_COUNT = 10
+
+# This sets the WIDTH and HEIGHT of each grid location
+WIDTH = ((1200 - MARGIN) / COLUMN_COUNT) - MARGIN
+HEIGHT = ((800 - MARGIN) / ROW_COUNT) - MARGIN
 
 
 class GameView(arcade.View):
@@ -80,7 +59,13 @@ class GameView(arcade.View):
                 y = (MARGIN + HEIGHT) * row + MARGIN + HEIGHT // 2
 
                 # Draw the box
-                arcade.draw_rect_filled(arcade.rect.XYWH(x, y, WIDTH, HEIGHT), color)
+                arcade.draw_rect_filled(arcade.rect.XYWH(
+                    x,
+                    y,
+                    WIDTH,
+                    HEIGHT
+                    ), color
+                    )
 
     def on_mouse_press(self, x, y, button, modifiers):
         """
@@ -91,8 +76,8 @@ class GameView(arcade.View):
         column = int(x // (WIDTH + MARGIN))
         row = int(y // (HEIGHT + MARGIN))
 
-        print(f"Click coordinates: ({x}, {y}). Grid coordinates: ({row}, {column})")
-
+        print(f"({x}, {y}). Grid coordinates: ({row}, {column})")
+        print(800 // WIDTH)
         # Make sure we are on-grid. It is possible to click in the upper right
         # corner in the margin and go to a grid location that doesn't exist
         if row < ROW_COUNT and column < COLUMN_COUNT:

@@ -1,5 +1,11 @@
 import arcade
-from arcade.gui import UIManager, UITextureButton, UIAnchorLayout, UIBoxLayout, UILabel
+from arcade.gui import (
+    UIManager,
+    UITextureButton,
+    UIAnchorLayout,
+    UIBoxLayout,
+    UILabel
+)
 from views.grid import GameView
 
 # Preload textures, because they are mostly used multiple times,so they are not
