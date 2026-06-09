@@ -49,7 +49,7 @@ lint-check:
 	@uvx ruff check
 
 lint-format:
-	@echo "running ruff check..."
+	@echo "running ruff format..."
 	@uvx ruff format
 
 

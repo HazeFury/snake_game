@@ -1,9 +1,5 @@
 import arcade
-from arcade.gui import (
-    UIManager,
-    UITextureButton,
-    UIAnchorLayout,
-)
+from arcade.gui import UIManager, UITextureButton, UIAnchorLayout, UIBoxLayout, UILabel
 from views.grid import GameView
 
 # Preload textures, because they are mostly used multiple times,so they are not
@@ -17,6 +13,7 @@ TEX_RED_BUTTON_HOVER = arcade.load_texture(
 TEX_RED_BUTTON_PRESS = arcade.load_texture(
     ":resources:gui_basic_assets/button/red_press.png"
 )
+arcade.load_font(':resources:/fonts/ttf/Kenney/Kenney_Blocks.ttf')
 
 
 class MenuView(arcade.View):
@@ -31,8 +28,17 @@ class MenuView(arcade.View):
         # Create anchor layout, which can be used to position widgets on screen
         anchor = self.ui.add(UIAnchorLayout())
 
+        button_box = UIBoxLayout(space_between=100)
+
+        button_box.add(
+            UILabel(text="Snake Game",
+                    font_size=50,
+                    text_color=arcade.color.WHITE,
+                    font_name='Kenney Blocks')
+        )
+
         # Add a button switch to the other View.
-        button = anchor.add(
+        play_button = button_box.add(
             UITextureButton(
                 text="Play",
                 texture=TEX_RED_BUTTON_NORMAL,
@@ -41,10 +47,24 @@ class MenuView(arcade.View):
             )
         )
 
-        # add a button to switch to the blue view
-        @button.event("on_click")
-        def on_click(event):
+        @play_button.event("on_click")
+        def on_click_play(event):
             self.window.show_view(GameView())
+
+        exit_button = button_box.add(
+            UITextureButton(
+                text="Exit Game",
+                texture=TEX_RED_BUTTON_NORMAL,
+                texture_hovered=TEX_RED_BUTTON_HOVER,
+                texture_pressed=TEX_RED_BUTTON_PRESS,
+            )
+        )
+
+        @exit_button.event("on_click")
+        def on_click_exit(event):
+            self.window.close()
+
+        anchor.add(button_box)
 
     def on_show_view(self) -> None:
         self.ui.enable()
