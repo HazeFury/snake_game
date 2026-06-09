@@ -1,7 +1,7 @@
 NAME = PROJECT
 VERSION = 0.1.0
 VENV = .venv
-SRC_DIR = src/
+SRC_DIR = src
 MAIN = main.py
 
 
@@ -24,13 +24,13 @@ setup:
 	fi
 
 build: install
-	@uv build
+	@uv run pyinstaller $(SRC_DIR)/$(MAIN) --paths $(SRC_DIR) --name snake_game
 
 run:
-	@uv run $(SRC_DIR)$(MAIN)
+	@uv run $(SRC_DIR)/$(MAIN)
 
 debug:
-	@uv run python3 -m pdb $(SRC_DIR)$(MAIN)
+	@uv run python3 -m pdb $(SRC_DIR)/$(MAIN)
 
 clean:
 	@echo "Removing temporary files or caches"
@@ -44,15 +44,14 @@ fclean: clean
 
 re: fclean all
 
-lint:
-	@echo "running linter..."
-	@uv run flake8 $(SRC_DIR)
-	@uv run mypy $(SRC_DIR)
+lint-check:
+	@echo "running ruff check..."
+	@uvx ruff check
 
-lint-strict:
-	@echo "running strict linter..."
-	@uv run flake8 $(SRC_DIR)
-	@uv run mypy $(SRC_DIR) --strict
+lint-format:
+	@echo "running ruff check..."
+	@uvx ruff format
+
 
 test:
 	@echo "Running test suite..."

@@ -13,6 +13,7 @@ See array_backed_grid_buffered.py
 If Python and Arcade are installed, this example can be run from the command line with:
 python -m arcade.examples.array_backed_grid
 """
+
 import arcade
 
 # Set how many rows and columns we will have
@@ -95,28 +96,8 @@ class GameView(arcade.View):
         # Make sure we are on-grid. It is possible to click in the upper right
         # corner in the margin and go to a grid location that doesn't exist
         if row < ROW_COUNT and column < COLUMN_COUNT:
-
             # Flip the location between 1 and 0.
             if self.grid[row][column] == 0:
                 self.grid[row][column] = 1
             else:
                 self.grid[row][column] = 0
-
-
-# def main():
-#     """ Main function """
-#     # Create a window class. This is what actually shows up on screen
-#     window = arcade.Window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)
-
-#     # Create the GameView
-#     game = GameView()
-
-#     # Show GameView on screen
-#     window.show_view(game)
-
-#     # Start the arcade game loop
-#     arcade.run()
-
-
-# if __name__ == "__main__":
-#     main()
