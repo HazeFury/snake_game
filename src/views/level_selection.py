@@ -1,6 +1,8 @@
 import arcade
 from arcade.gui import UIManager, UITextureButton, UIAnchorLayout, UIBoxLayout, UILabel
-from views.level_selection import LevelView
+from views.grid import GameView
+
+from utils.config_loader import GAME_CONFIG
 
 # Preload textures, because they are mostly used multiple times,so they are not
 # loaded multiple times
@@ -13,14 +15,15 @@ TEX_RED_BUTTON_HOVER = arcade.load_texture(
 TEX_RED_BUTTON_PRESS = arcade.load_texture(
     ":resources:gui_basic_assets/button/red_press.png"
 )
-arcade.load_font(":resources:/fonts/ttf/Kenney/Kenney_Blocks.ttf")
 
 
-class MenuView(arcade.View):
+class LevelView(arcade.View):
     """Uses the arcade.View and shows how to integrate UIManager."""
 
     def __init__(self):
         super().__init__()
+
+        levels = GAME_CONFIG["levels"]
 
         # Create a UIManager
         self.ui = UIManager()
@@ -32,39 +35,39 @@ class MenuView(arcade.View):
 
         button_box.add(
             UILabel(
-                text="Snake Game",
-                font_size=50,
+                text="Choose the difficulty",
+                font_size=30,
                 text_color=arcade.color.WHITE,
-                font_name="Kenney Blocks",
             )
         )
+        for level in levels.keys():
+            current = button_box.add(
+                UITextureButton(
+                    text=level,
+                    texture=TEX_RED_BUTTON_NORMAL,
+                    texture_hovered=TEX_RED_BUTTON_HOVER,
+                    texture_pressed=TEX_RED_BUTTON_PRESS,
+                )
+            )
 
-        # Add a button switch to the other View.
-        play_button = button_box.add(
+            @current.event("on_click")
+            def on_click(event, captured_level=level):
+                self.window.show_view(GameView(level=captured_level))
+
+        return_button = button_box.add(
             UITextureButton(
-                text="Play",
+                text="Go back to menu",
                 texture=TEX_RED_BUTTON_NORMAL,
                 texture_hovered=TEX_RED_BUTTON_HOVER,
                 texture_pressed=TEX_RED_BUTTON_PRESS,
             )
         )
 
-        @play_button.event("on_click")
-        def on_click_play(event):
-            self.window.show_view(LevelView())
+        from views.menu import MenuView
 
-        exit_button = button_box.add(
-            UITextureButton(
-                text="Exit Game",
-                texture=TEX_RED_BUTTON_NORMAL,
-                texture_hovered=TEX_RED_BUTTON_HOVER,
-                texture_pressed=TEX_RED_BUTTON_PRESS,
-            )
-        )
-
-        @exit_button.event("on_click")
+        @return_button.event("on_click")
         def on_click_exit(event):
-            self.window.close()
+            self.window.show_view(MenuView())
 
         anchor.add(button_box)
 
