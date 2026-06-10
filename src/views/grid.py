@@ -37,7 +37,7 @@ class GameView(arcade.View):
         # Determine grid rows and columns based on the difficulty level
         self.rows = GAME_CONFIG["levels"][self.level]["rows"]
         # Aspect ratio of the window is 1.5 (1200/800)
-        self.columns = int(self.rows * 1.5)
+        self.columns = self.rows
 
         self.cell_width = math.floor((self.window_width - self.margin) / self.columns) - self.margin
         self.cell_height = math.floor((self.window_height - self.margin) / self.rows) - self.margin
