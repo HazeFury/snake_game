@@ -22,7 +22,6 @@ def main():
 
     window = arcade.Window(title="Snake Game", width=window_width, height=window_height)
     # window.set_location(x=800, y=1200)
-
     # Show the view on screen
     window.show_view(MenuView())
 
