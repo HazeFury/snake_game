@@ -1,5 +1,6 @@
 import arcade
 from utils.config_loader import GAME_CONFIG
+from core.snake import Snake
 
 
 class GameView(arcade.View):
@@ -15,7 +16,7 @@ class GameView(arcade.View):
         super().__init__()
 
         self.level = level
-
+        self.snake = Snake()
         # Define the margin between each cell and the border
         self.margin = 1
         self.rows = GAME_CONFIG["levels"][self.level]["rows"]
@@ -37,6 +38,15 @@ class GameView(arcade.View):
             for column in range(self.columns):
                 self.grid[row].append(0)  # Append a cell
 
+        for i, snake_cell in enumerate(self.snake.body):
+            x = snake_cell.get("x", 0)
+            y = snake_cell.get("y", 0)
+
+            if i == 0:
+                self.grid[y][x] = 2
+            else:
+                self.grid[y][x] = 1
+
         self.background_color = arcade.color.WHITE
 
     def on_draw(self):
@@ -52,6 +62,8 @@ class GameView(arcade.View):
                 # Figure out what color to draw the box
                 if self.grid[row][column] == 1:
                     color = arcade.color.GREEN
+                elif self.grid[row][column] == 2:
+                    color = arcade.color.RED
                 else:
                     color = arcade.color.BLACK
 
