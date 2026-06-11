@@ -20,12 +20,14 @@ def main():
     window_width = GAME_CONFIG["window"]["width"]
     window_height = GAME_CONFIG["window"]["height"]
 
-    window = arcade.Window(title="Snake Game", width=window_width, height=window_height)
-    # window.set_location(x=800, y=1200)
-    # Show the view on screen
+    window = arcade.Window(
+        title="Snake Game",
+        width=window_width,
+        height=window_height
+        )
     window.show_view(MenuView())
+    window.center_window()
 
-    # Start the arcade game loop
     arcade.run()
 
 

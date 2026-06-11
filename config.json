@@ -1,11 +1,11 @@
 {
   "window": {
-    "width": 800,
-    "height": 800
+    "width": 795,
+    "height": 795
   },
   "levels": {
-    "Easy": { "rows": 10 },
-    "Intermediate": { "rows": 20 },
-    "Hardcore": { "rows": 30 }
+    "Easy": { "rows": 10, "col": 10, "cell_size": 40 },
+    "Intermediate": { "rows": 20, "col": 20, "cell_size": 40 },
+    "Hardcore": { "rows": 20, "col": 40, "cell_size": 30 }
   }
 }
