@@ -473,7 +473,7 @@ wheels = [
 ]
 
 [[package]]
-name = "template-42-project"
+name = "snake-game"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

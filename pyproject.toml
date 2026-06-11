@@ -1,7 +1,7 @@
 [project]
-name = "template-42-project"
+name = "snake_game"
 version = "0.1.0"
-description = "A standard 42 Python project template"
+description = "The famous game of Snake."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
