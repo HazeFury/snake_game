@@ -30,6 +30,11 @@ class Grid:
             for column in range(self.columns):
                 self.grid[row].append(0)  # Append a cell
 
+    def reset_grid(self) -> None:
+        for row in range(self.rows):
+            for column in range(self.columns):
+                self.grid[row][column] = 0
+
     def put_snake_on_grid(self, snake: Snake) -> None:
         for i, snake_cell in enumerate(snake.body):
             x = snake_cell.get("x", 0)

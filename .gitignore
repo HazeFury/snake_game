@@ -8,6 +8,7 @@ dist/
 wheels/
 *.egg-info
 snake_game.spec
+.ruff_cache
 
 # Virtual environments
 .venv
