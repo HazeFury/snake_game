@@ -24,6 +24,15 @@ class GameView(arcade.View):
         self.grid.create_grid()
         self.grid.put_snake_on_grid(self.snake)
 
+        arcade.schedule(self.some_action, 1)
+        # Unschedule
+        # arcade.unschedule(self.some_action)
+
+    def some_action(self, delta_time):
+        self.snake.move()
+        self.grid.reset_grid()
+        self.grid.put_snake_on_grid(self.snake)
+
     def on_draw(self):
         """
         Render the screen.
