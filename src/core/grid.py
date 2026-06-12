@@ -1,22 +1,18 @@
 import arcade
 from utils.config_loader import GAME_CONFIG
+from core.snake import Snake
 
 
-class GameView(arcade.View):
+class Grid:
     """
     Main application class.
     """
 
     def __init__(self, level: str):
-        """
-        Set up the application.
-        """
-
-        super().__init__()
+        """Configuration and display of the 2D grid."""
 
         self.level = level
-
-        # Define the margin between each cell and the border
+        self.grid = []
         self.margin = 1
         self.rows = GAME_CONFIG["levels"][self.level]["rows"]
         self.columns = GAME_CONFIG["levels"][self.level]["col"]
@@ -27,31 +23,35 @@ class GameView(arcade.View):
         self.window_height = \
             (self.cell_size + self.margin) * self.rows + self.margin
 
-        self.window.set_size(self.window_width, self.window_height)
-        self.window.center_window()
-
-        self.grid = []
+    def create_grid(self) -> None:
         for row in range(self.rows):
             # Add an empty array that will hold each cell in this row
             self.grid.append([])
             for column in range(self.columns):
                 self.grid[row].append(0)  # Append a cell
 
-        self.background_color = arcade.color.WHITE
+    def put_snake_on_grid(self, snake: Snake) -> None:
+        for i, snake_cell in enumerate(snake.body):
+            x = snake_cell.get("x", 0)
+            y = snake_cell.get("y", 0)
 
-    def on_draw(self):
+            if i == 0:
+                self.grid[y][x] = 2
+            else:
+                self.grid[y][x] = 1
+
+    def draw_grid(self):
         """
         Render the screen.
         """
-        # This command has to happen before we start drawing
-        self.clear()
-
         # Draw the grid
         for row in range(self.rows):
             for column in range(self.columns):
                 # Figure out what color to draw the box
                 if self.grid[row][column] == 1:
                     color = arcade.color.GREEN
+                elif self.grid[row][column] == 2:
+                    color = arcade.color.RED
                 else:
                     color = arcade.color.BLACK
 
