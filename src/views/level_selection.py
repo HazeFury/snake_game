@@ -1,6 +1,12 @@
 import arcade
-from arcade.gui import UIManager, UITextureButton, UIAnchorLayout, UIBoxLayout, UILabel
-from views.grid import GameView
+from arcade.gui import (
+    UIManager,
+    UITextureButton,
+    UIAnchorLayout,
+    UIBoxLayout,
+    UILabel
+)
+from views.game import GameView
 
 from utils.config_loader import GAME_CONFIG
 
