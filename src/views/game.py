@@ -1,6 +1,8 @@
 import arcade
 from core.snake import Snake
 from core.grid import Grid
+from views.game_over import GameOverView
+from utils.handle_input import handle_input
 
 
 class GameView(arcade.View):
@@ -14,6 +16,9 @@ class GameView(arcade.View):
         """
 
         super().__init__()
+        self.is_running: True = True
+        self.is_game_over = False
+        self.speed = 1
         self.grid: Grid = Grid(level)
         self.snake: Snake = Snake()
 
@@ -24,12 +29,23 @@ class GameView(arcade.View):
         self.grid.create_grid()
         self.grid.put_snake_on_grid(self.snake)
 
-        arcade.schedule(self.some_action, 1)
-        # Unschedule
-        # arcade.unschedule(self.some_action)
+        arcade.schedule(self.game_loop, self.speed)
 
-    def some_action(self, delta_time):
+    def game_loop(self, delta_time):
+        """
+        Move the snake and refresh the grid, then draw it. Also check if snake
+        collision has collision with walls or himself.
+        """
+        self.snake.check_snake_collision()
         self.snake.move()
+
+        if not self.snake.check_border_collision(
+            self.grid.rows, self.grid.columns
+                ) or not self.snake.check_snake_collision():
+            self.is_running = False
+            self.is_game_over = True
+            return arcade.unschedule(self.game_loop)
+
         self.grid.reset_grid()
         self.grid.put_snake_on_grid(self.snake)
 
@@ -41,4 +57,21 @@ class GameView(arcade.View):
         self.clear()
 
         # Draw the grid
-        self.grid.draw_grid()
+        if self.is_running is True and self.is_game_over is False:
+            self.grid.draw_grid()
+        else:
+            self.window.show_view(GameOverView(
+                score=len(self.snake.body) - 4
+                ))
+
+    def on_key_press(self, key, modifiers):
+        """Called whenever a key is pressed. """
+
+        handle_input(key, self.snake)
+
+        if key == arcade.key.ESCAPE:
+            self.is_running = not self.is_running
+            if self.is_running is True:
+                arcade.schedule(self.game_loop, self.speed)
+            else:
+                arcade.unschedule(self.game_loop)
