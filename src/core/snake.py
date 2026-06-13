@@ -9,6 +9,15 @@ class Snake:
             ]
         self.direction: str = "N"
 
+    def check_collision(self, max_rows: int, max_cols: int) -> bool:
+        for node in self.body:
+            if node["y"] < 0 or node["y"] >= max_rows:
+                return False
+            elif node["x"] < 0 or node["x"] >= max_cols:
+                return False
+
+        return True
+
     def move(self) -> None:
         x = self.body[0].get("x")
         y = self.body[0].get("y")
