@@ -57,6 +57,8 @@ class Grid:
                     color = arcade.color.GREEN
                 elif self.grid[row][column] == 2:
                     color = arcade.color.RED
+                elif self.grid[row][column] == 3:
+                    color = arcade.color.VIOLET
                 else:
                     color = arcade.color.BLACK
 
