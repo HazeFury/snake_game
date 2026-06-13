@@ -1,6 +1,7 @@
 import arcade
 from core.snake import Snake
 from core.grid import Grid
+from views.game_over import GameOverView
 from utils.handle_input import handle_input
 
 
@@ -16,6 +17,7 @@ class GameView(arcade.View):
 
         super().__init__()
         self.is_running: True = True
+        self.is_game_over = False
         self.grid: Grid = Grid(level)
         self.snake: Snake = Snake()
 
@@ -26,10 +28,14 @@ class GameView(arcade.View):
         self.grid.create_grid()
         self.grid.put_snake_on_grid(self.snake)
 
-        arcade.schedule(self.some_action, 1)
+        arcade.schedule(self.move_snake_on_grid, 1)
 
-    def some_action(self, delta_time):
+    def move_snake_on_grid(self, delta_time):
         self.snake.move()
+        if not self.snake.check_collision(self.grid.rows, self.grid.columns):
+            self.is_running = False
+            self.is_game_over = True
+            return
         self.grid.reset_grid()
         self.grid.put_snake_on_grid(self.snake)
         print(self.is_running)
@@ -42,9 +48,12 @@ class GameView(arcade.View):
         self.clear()
 
         # Draw the grid
-        if self.is_running is True:
+        if self.is_running is True and self.is_game_over is False:
             self.grid.draw_grid()
-        # else:
+        else:
+            self.window.show_view(GameOverView(
+                score=len(self.snake.body) - 4
+                ))
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
@@ -54,6 +63,6 @@ class GameView(arcade.View):
         if key == arcade.key.ESCAPE:
             self.is_running = not self.is_running
             if self.is_running is True:
-                arcade.schedule(self.some_action, 1)
+                arcade.schedule(self.move_snake_on_grid, 1)
             else:
-                arcade.unschedule(self.some_action)
+                arcade.unschedule(self.move_snake_on_grid)
