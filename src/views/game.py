@@ -3,6 +3,7 @@ from core.snake import Snake
 from core.grid import Grid
 from utils.handle_input import handle_input
 
+
 class GameView(arcade.View):
     """
     Main application class.
@@ -24,11 +25,8 @@ class GameView(arcade.View):
 
         self.grid.create_grid()
         self.grid.put_snake_on_grid(self.snake)
-        if self.is_running is True:
-            arcade.schedule(self.some_action, 1)
-        else:
-            # Unschedule
-            arcade.unschedule(self.some_action)
+
+        arcade.schedule(self.some_action, 1)
 
     def some_action(self, delta_time):
         self.snake.move()
@@ -44,12 +42,18 @@ class GameView(arcade.View):
         self.clear()
 
         # Draw the grid
-        # if self.is_running is True:
-        self.grid.draw_grid()
+        if self.is_running is True:
+            self.grid.draw_grid()
+        # else:
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
 
-        handle_input(key, self.snake, self.is_running)
+        handle_input(key, self.snake)
+
         if key == arcade.key.ESCAPE:
             self.is_running = not self.is_running
+            if self.is_running is True:
+                arcade.schedule(self.some_action, 1)
+            else:
+                arcade.unschedule(self.some_action)
