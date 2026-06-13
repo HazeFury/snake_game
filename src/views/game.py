@@ -18,6 +18,7 @@ class GameView(arcade.View):
         super().__init__()
         self.is_running: True = True
         self.is_game_over = False
+        self.speed = 1
         self.grid: Grid = Grid(level)
         self.snake: Snake = Snake()
 
@@ -28,17 +29,25 @@ class GameView(arcade.View):
         self.grid.create_grid()
         self.grid.put_snake_on_grid(self.snake)
 
-        arcade.schedule(self.move_snake_on_grid, 1)
+        arcade.schedule(self.game_loop, self.speed)
 
-    def move_snake_on_grid(self, delta_time):
+    def game_loop(self, delta_time):
+        """
+        Move the snake and refresh the grid, then draw it. Also check if snake
+        collision has collision with walls or himself.
+        """
+        self.snake.check_snake_collision()
         self.snake.move()
-        if not self.snake.check_collision(self.grid.rows, self.grid.columns):
+
+        if not self.snake.check_border_collision(
+            self.grid.rows, self.grid.columns
+                ) or not self.snake.check_snake_collision():
             self.is_running = False
             self.is_game_over = True
-            return
+            return arcade.unschedule(self.game_loop)
+
         self.grid.reset_grid()
         self.grid.put_snake_on_grid(self.snake)
-        print(self.is_running)
 
     def on_draw(self):
         """
@@ -63,6 +72,6 @@ class GameView(arcade.View):
         if key == arcade.key.ESCAPE:
             self.is_running = not self.is_running
             if self.is_running is True:
-                arcade.schedule(self.move_snake_on_grid, 1)
+                arcade.schedule(self.game_loop, self.speed)
             else:
-                arcade.unschedule(self.move_snake_on_grid)
+                arcade.unschedule(self.game_loop)
