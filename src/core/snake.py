@@ -15,6 +15,9 @@ class Snake:
             ]
         self.direction: str = "N"
 
+    def grow(self) -> None:
+        pass
+
     def check_border_collision(self, max_rows: int, max_cols: int) -> bool:
         """Check if the snake is currently out the map."""
         for node in self.body:
@@ -37,6 +40,9 @@ class Snake:
             return False
         else:
             return True
+
+    def can_eat_food(self, food_coord: tuple[int, int]) -> bool:
+        pass
 
     def move(self) -> None:
         """Move the snake according to the current direction."""
