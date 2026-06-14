@@ -1,4 +1,5 @@
 import arcade
+from core.food import Food
 from core.snake import Snake
 from core.grid import Grid
 from views.game_over import GameOverView
@@ -19,8 +20,10 @@ class GameView(arcade.View):
         self.is_running: True = True
         self.is_game_over = False
         self.speed = 1
+
         self.grid: Grid = Grid(level)
         self.snake: Snake = Snake()
+        self.food: Food = Food()
 
         self.window.set_size(self.grid.window_width, self.grid.window_height)
         self.window.center_window()
@@ -28,6 +31,7 @@ class GameView(arcade.View):
 
         self.grid.create_grid()
         self.grid.put_snake_on_grid(self.snake)
+        self.food.generate_new_food(self.snake, self.grid)
 
         arcade.schedule(self.game_loop, self.speed)
 
@@ -48,6 +52,7 @@ class GameView(arcade.View):
 
         self.grid.reset_grid()
         self.grid.put_snake_on_grid(self.snake)
+        self.food.generate_new_food(self.snake, self.grid)
 
     def on_draw(self):
         """
