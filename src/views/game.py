@@ -40,8 +40,12 @@ class GameView(arcade.View):
         Move the snake and refresh the grid, then draw it. Also check if snake
         collision has collision with walls or himself.
         """
-        self.snake.check_snake_collision()
         self.snake.move()
+        self.grid.reset_grid()
+
+        if self.snake.can_eat_food(self.food.current_food_coord):
+            self.snake.grow()
+            self.food.generate_new_food(self.snake, self.grid)
 
         if not self.snake.check_border_collision(
             self.grid.rows, self.grid.columns
@@ -50,9 +54,8 @@ class GameView(arcade.View):
             self.is_game_over = True
             return arcade.unschedule(self.game_loop)
 
-        self.grid.reset_grid()
         self.grid.put_snake_on_grid(self.snake)
-        self.food.generate_new_food(self.snake, self.grid)
+        self.grid.put_food_on_grid(self.food.current_food_coord)
 
     def on_draw(self):
         """

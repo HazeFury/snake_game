@@ -45,6 +45,10 @@ class Grid:
             else:
                 self.grid[y][x] = 1
 
+    def put_food_on_grid(self, food_coord: tuple[int, int]) -> None:
+        y, x = food_coord
+        self.grid[y][x] = 3
+
     def draw_grid(self):
         """
         Render the screen.
